@@ -1,11 +1,22 @@
-name: Deploy to GitHub Pages
+name: サイト更新・公開
+
+# 1) スプレッドシートを読みに行き
+# 2) お知らせ・スケジュールのHTMLを組み立て直し
+# 3) 変更があれば記録として保存し
+# 4) サイトを公開する
+# ……までを1回で行います。
 
 on:
   push:
     branches: [main]
+  schedule:
+    # 毎時5分に自動実行（スプレッドシートを書き換えると最大1時間で反映されます）
+    - cron: '5 * * * *'
+  workflow_dispatch:
+    # 「今すぐ反映」用。Actionsタブから手動で実行できます
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -21,10 +32,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: スプレッドシートの内容をサイトに反映
+        env:
+          # 「Settings > Secrets and variables > Actions」で SHEET_ID を登録すると
+          # そちらが優先されます。未登録なら tools/sheet_config.json の値を使います。
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+        run: python -X utf8 tools/build_site.py
+
+      - name: 変更があれば記録として保存
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "スプレッドシートの内容を反映"
+            git push
+          else
+            echo "変更なし"
+          fi
+
+      - name: 公開用ファイルを準備（管理用フォルダは公開しない）
+        run: rm -rf tools
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
-      - name: Deploy to GitHub Pages
+
+      - name: サイトを公開
         id: deployment
         uses: actions/deploy-pages@v4

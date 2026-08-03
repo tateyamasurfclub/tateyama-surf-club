@@ -1,0 +1,8 @@
+{
+  "_説明": "館山サーフクラブ サイト更新の設定ファイル。",
+  "_手順": "Googleスプレッドシートを作ったら、そのURLの /d/ と /edit の間の文字列を sheet_id に貼り付けてください。",
+  "_例": "https://docs.google.com/spreadsheets/d/1AbCdEfG.../edit → sheet_id は 1AbCdEfG...",
+  "_共有設定": "シートは「リンクを知っている全員」→「閲覧者」にしてください。",
+  "sheet_id": "ここにスプレッドシートIDを貼り付け",
+  "top_page_news_count": 5
+}

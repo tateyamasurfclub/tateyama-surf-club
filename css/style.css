@@ -1492,6 +1492,11 @@ ul, ol {
   border-radius: var(--radius);
 }
 
+/* 写真なしのお知らせ（スプレッドシートの画像欄が空のとき） */
+.news-card--noimg {
+  grid-template-columns: 1fr;
+}
+
 .news-card__meta {
   display: flex;
   gap: 12px;
