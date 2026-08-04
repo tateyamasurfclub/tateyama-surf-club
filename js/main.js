@@ -65,6 +65,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 5000);
   }
 
+  // --- メールリンクの保険 ---
+  // 「メールする」を押しても、スマホやパソコンにメールアプリが設定されていないと
+  // 何も起きない（mailto: の仕様上どうにもならない）。
+  // そこで押した瞬間にアドレスをコピーしておき、
+  // アプリが開かなかった人でも貼り付けて送れるようにする。
+  const mailLinks = document.querySelectorAll('a[href^="mailto:"]');
+  if (mailLinks.length) {
+    let toast;
+    const showToast = (address) => {
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.className = 'copy-toast';
+        toast.setAttribute('role', 'status');
+        toast.setAttribute('aria-live', 'polite');
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML =
+        '<strong>' + address + '</strong>' +
+        '<span>メールアドレスをコピーしました。<br>' +
+        'メールアプリが開かない場合は、貼り付けてお送りください。</span>';
+      toast.classList.add('visible');
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => toast.classList.remove('visible'), 6000);
+    };
+
+    const copyText = (text) => {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+      // 古いブラウザ向け
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) { /* コピー不可でも先へ進む */ }
+      document.body.removeChild(ta);
+      return Promise.resolve();
+    };
+
+    mailLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        const address = link.getAttribute('href').replace(/^mailto:/, '').split('?')[0];
+        copyText(address).catch(() => {}).then(() => showToast(address));
+      });
+    });
+  }
+
   // --- Active nav link ---
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav__link').forEach(link => {

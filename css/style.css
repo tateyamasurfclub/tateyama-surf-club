@@ -1578,3 +1578,44 @@ ul, ol {
     text-align: center;
   }
 }
+
+/* --- メールアドレスのコピー通知 --- */
+/* mailto: はメールアプリが未設定だと無反応になるため、
+   押した瞬間にアドレスをコピーして、その旨をここで知らせる。 */
+.copy-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%) translateY(16px);
+  max-width: min(560px, calc(100vw - 32px));
+  padding: 16px 20px;
+  background: var(--gray-900);
+  color: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 10001;
+}
+
+.copy-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.copy-toast strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.9375rem;
+  word-break: break-all;
+}
+
+.copy-toast span {
+  display: block;
+  color: var(--gray-200);
+  font-size: 0.8125rem;
+}
