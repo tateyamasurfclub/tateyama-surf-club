@@ -909,6 +909,18 @@ ul, ol {
     grid-template-columns: 1fr 1fr;
   }
   /* Mobile nav */
+
+  /* ★重要★ ここを消さないこと。
+     .header の backdrop-filter を有効にしたままだと、CSSの仕様により
+     .header が「中にある position:fixed 要素の位置の基準」になってしまい、
+     下の .nav の bottom:0 が「画面の下端」ではなく「ヘッダーの下端」と解釈される。
+     結果メニューの高さが padding 分（48px）に潰れ、項目がまったく押せなくなる。
+     重なり順(z-index)の問題ではないので、z-index を上げても直らない。 */
+  .header {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
   .nav {
     position: fixed;
     top: var(--header-height);
