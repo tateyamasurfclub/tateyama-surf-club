@@ -73,6 +73,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const contactThanks = document.getElementById('contact-thanks');
   if (contactForm && contactFrame && contactThanks) {
     const submitBtn = document.getElementById('contact-submit');
+
+    // 他のページから contact.html?type=junior のように来たとき、
+    // 「お問い合わせ種別」をあらかじめ選んでおく。
+    // 選択肢の文言が変わっても壊れないよう、含まれる言葉で探す。
+    const TYPE_KEYWORDS = {
+      join: '入会',
+      visit: '見学',
+      junior: '普及部',
+      event: 'イベント',
+      media: '取材',
+      sponsor: 'スポンサー',
+      other: 'その他'
+    };
+    const wanted = new URLSearchParams(location.search).get('type');
+    const categorySelect = document.getElementById('cf-category');
+    if (wanted && categorySelect && TYPE_KEYWORDS[wanted]) {
+      const keyword = TYPE_KEYWORDS[wanted];
+      const hit = [...categorySelect.options]
+        .find(o => o.value && o.value.indexOf(keyword) !== -1);
+      if (hit) categorySelect.value = hit.value;
+    }
     const againBtn = document.getElementById('contact-again');
     let sending = false;
     let timer = null;
