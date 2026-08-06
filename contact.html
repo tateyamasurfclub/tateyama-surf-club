@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260804b">
+  <link rel="stylesheet" href="css/style.css?v=20260806">
 </head>
 <body>
 
@@ -85,41 +85,70 @@
         <!-- Contact Form -->
         <div>
           <h2 style="font-size: 1.5rem; margin-bottom: 24px;">お問い合わせフォーム</h2>
-          <form action="#" method="post" style="background: var(--off-white); padding: 32px; border-radius: var(--radius-lg);">
+          <!-- ============================================================
+               お問い合わせフォーム
+               送信先はクラブのGoogleフォーム（jimukyoku アカウント所有）。
+               name="entry.XXXX" はGoogleフォームの各質問に割り当てられたID。
+               ★ここを書き換えると回答が届かなくなるので触らないこと★
+               「お問い合わせ種別」の選択肢の文言は、Googleフォーム側の
+               選択肢と1字でも違うと送信が拒否される。
+               確認は tools/check_form.py を実行する。
+               ============================================================ -->
+          <form id="contact-form"
+                action="https://docs.google.com/forms/d/e/1FAIpQLSfq9jf2nLXtvBOKBJhkkrIbX2AdgpJl3dTItI2ZpMby16F6JA/formResponse"
+                method="post" target="contact-form-target"
+                style="background: var(--off-white); padding: 32px; border-radius: var(--radius-lg);">
             <div class="form-group">
-              <label>お名前<span class="required">必須</span></label>
-              <input type="text" class="form-input" name="name" required placeholder="山田 太郎">
+              <label for="cf-name">お名前<span class="required">必須</span></label>
+              <input type="text" id="cf-name" class="form-input" name="entry.1020707756" required placeholder="山田 太郎">
             </div>
             <div class="form-group">
-              <label>メールアドレス<span class="required">必須</span></label>
-              <input type="email" class="form-input" name="email" required placeholder="example@email.com">
+              <label for="cf-email">メールアドレス<span class="required">必須</span></label>
+              <input type="email" id="cf-email" class="form-input" name="entry.36094406" required placeholder="example@email.com">
             </div>
             <div class="form-group">
-              <label>電話番号</label>
-              <input type="tel" class="form-input" name="phone" placeholder="090-1234-5678">
+              <label for="cf-tel">電話番号</label>
+              <input type="tel" id="cf-tel" class="form-input" name="entry.1848544343" placeholder="090-1234-5678">
             </div>
             <div class="form-group">
-              <label>お問い合わせ種別<span class="required">必須</span></label>
-              <select class="form-select" name="category" required>
+              <label for="cf-category">お問い合わせ種別<span class="required">必須</span></label>
+              <select class="form-select" id="cf-category" name="entry.1344046162" required>
                 <option value="">選択してください</option>
-                <option value="join">入会について</option>
-                <option value="visit">見学・体験について</option>
-                <option value="junior">普及部・育成部について</option>
-                <option value="event">イベントパトロール依頼</option>
-                <option value="media">取材・メディア関連</option>
-                <option value="sponsor">スポンサー・協賛</option>
-                <option value="other">その他</option>
+                <option value="入会について">入会について</option>
+                <option value="見学・体験について">見学・体験について</option>
+                <option value="普及部（ジュニア）・育成部（ユース）について">普及部（ジュニア）・育成部（ユース）について</option>
+                <option value="イベントパトロール依頼">イベントパトロール依頼</option>
+                <option value="取材・メディア関連">取材・メディア関連</option>
+                <option value="スポンサー・協賛">スポンサー・協賛</option>
+                <option value="その他">その他</option>
               </select>
             </div>
             <div class="form-group">
-              <label>お問い合わせ内容<span class="required">必須</span></label>
-              <textarea class="form-textarea" name="message" required placeholder="お問い合わせ内容をご記入ください"></textarea>
+              <label for="cf-message">お問い合わせ内容<span class="required">必須</span></label>
+              <textarea class="form-textarea" id="cf-message" name="entry.1545862863" required placeholder="お問い合わせ内容をご記入ください"></textarea>
             </div>
-            <div class="info-box info-box--warning" style="margin-bottom: 24px;">
-              <p style="font-size: 0.875rem;">このフォームは現在準備中です。お手数ですが、事務局メール（jimukyoku.tateyamasc@gmail.com）まで直接ご連絡ください。</p>
-            </div>
-            <button type="submit" class="btn btn--primary" style="width: 100%;" disabled>送信する（準備中）</button>
+            <p style="font-size: 0.8125rem; color: var(--gray-500); margin-bottom: 20px;">
+              ご記入いただいた内容は、お問い合わせへの回答のみに使用します。詳しくは<a href="privacy.html">プライバシーポリシー</a>をご覧ください。
+            </p>
+            <button type="submit" id="contact-submit" class="btn btn--primary" style="width: 100%;">送信する</button>
           </form>
+
+          <!-- 送信後にここを表示する -->
+          <div id="contact-thanks" class="contact-thanks" hidden>
+            <p class="contact-thanks__title">送信しました</p>
+            <p>お問い合わせありがとうございます。<br>通常2〜3営業日以内に、ご記入のメールアドレス宛にご返信いたします。</p>
+            <p class="contact-thanks__note">
+              自動返信メールは送られません。<br>
+              数日たっても返信が届かない場合は、お手数ですが
+              <a href="mailto:jimukyoku.tateyamasc@gmail.com">jimukyoku.tateyamasc@gmail.com</a>
+              まで直接ご連絡ください。
+            </p>
+            <button type="button" id="contact-again" class="btn btn--outline btn--sm">続けてもう1件送る</button>
+          </div>
+
+          <!-- 送信結果を受け取るための枠（利用者には見えない） -->
+          <iframe name="contact-form-target" id="contact-form-target"
+                  title="送信処理" style="display:none;" tabindex="-1" aria-hidden="true"></iframe>
         </div>
       </div>
     </div>
@@ -137,6 +166,6 @@
     </div>
   </footer>
   <button class="scroll-top" aria-label="ページの先頭へ">&uarr;</button>
-  <script src="js/main.js?v=20260804"></script>
+  <script src="js/main.js?v=20260806"></script>
 </body>
 </html>

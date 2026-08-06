@@ -1619,3 +1619,32 @@ ul, ol {
   color: var(--gray-200);
   font-size: 0.8125rem;
 }
+
+/* --- お問い合わせフォーム 送信完了 --- */
+.contact-thanks {
+  background: var(--off-white);
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--primary);
+  text-align: center;
+  line-height: 1.8;
+}
+
+.contact-thanks__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12px;
+}
+
+.contact-thanks__note {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--gray-200);
+  font-size: 0.8125rem;
+  color: var(--gray-500);
+}
+
+.contact-thanks .btn {
+  margin-top: 20px;
+}

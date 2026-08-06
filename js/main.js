@@ -65,6 +65,60 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 5000);
   }
 
+  // --- お問い合わせフォーム ---
+  // 送信先はGoogleフォーム。別ドメインのため送信結果を直接は読めないので、
+  // 見えない枠(iframe)の読み込み完了をもって「送信できた」と判断する。
+  const contactForm = document.getElementById('contact-form');
+  const contactFrame = document.getElementById('contact-form-target');
+  const contactThanks = document.getElementById('contact-thanks');
+  if (contactForm && contactFrame && contactThanks) {
+    const submitBtn = document.getElementById('contact-submit');
+    const againBtn = document.getElementById('contact-again');
+    let sending = false;
+    let timer = null;
+
+    const finish = () => {
+      clearTimeout(timer);
+      sending = false;
+      contactForm.hidden = true;
+      contactThanks.hidden = false;
+      contactThanks.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      contactForm.reset();
+      submitBtn.disabled = false;
+      submitBtn.textContent = '送信する';
+    };
+
+    contactForm.addEventListener('submit', () => {
+      // 入力チェックはブラウザ標準に任せる。ここに来た時点で内容は妥当
+      sending = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = '送信中…';
+      // 通信が返らないまま固まるのを防ぐ
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        if (!sending) return;
+        sending = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = '送信する';
+        alert('送信の確認が取れませんでした。\n'
+            + 'お手数ですが jimukyoku.tateyamasc@gmail.com までメールでご連絡ください。');
+      }, 15000);
+    });
+
+    contactFrame.addEventListener('load', () => {
+      // ページ表示時にも1度発火するため、送信中のときだけ完了とみなす
+      if (sending) finish();
+    });
+
+    if (againBtn) {
+      againBtn.addEventListener('click', () => {
+        contactThanks.hidden = true;
+        contactForm.hidden = false;
+        contactForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    }
+  }
+
   // --- メールリンクの保険 ---
   // 「メールする」を押しても、スマホやパソコンにメールアプリが設定されていないと
   // 何も起きない（mailto: の仕様上どうにもならない）。
