@@ -1648,3 +1648,14 @@ ul, ol {
 .contact-thanks .btn {
   margin-top: 20px;
 }
+
+/* --- 長い文字列で横スクロールが出るのを防ぐ --- */
+/* メールアドレスやURLは途中に空白が無いため、そのままだと
+   1つの単語として扱われ、表や枠を横に押し広げてしまう。
+   スマホでは画面から溢れて横スクロールが発生する。 */
+.table td,
+.table th,
+a[href^="mailto:"],
+a[href^="http"] {
+  overflow-wrap: anywhere;
+}

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260811">
+  <link rel="stylesheet" href="css/style.css?v=20260811b">
 </head>
 <body>
 
@@ -124,7 +124,9 @@
       <p class="section-subtitle">Patrol Season</p>
       <h2 class="section-title">パトロールシーズン</h2>
       <div style="max-width: 800px; margin: 40px auto 0;">
-        <div class="card-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <!-- 7・8・9月の小さなカード。画面幅に応じて自動で列数が変わる書き方にする
+             （repeat(3, 1fr) のように列数を固定すると、スマホでも3列のままになる） -->
+        <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));">
           <div class="icon-card" style="border-color: var(--primary);">
             <div class="icon-card__icon">7</div>
             <h3 class="icon-card__title">7月</h3>

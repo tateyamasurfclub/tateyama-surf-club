@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260811">
+  <link rel="stylesheet" href="css/style.css?v=20260811b">
 </head>
 <body>
 
@@ -53,7 +53,9 @@
         <p>これまでの「ジュニア」は<strong>普及部</strong>に、「ユース」は<strong>育成部</strong>に名称が変わりました。</p>
       </div>
 
-      <div class="card-grid" style="grid-template-columns: repeat(2, 1fr);">
+      <!-- 列数はCSSの .card-grid に任せる。ここで grid-template-columns を
+           直接書くと、スマホで1列にする指定を打ち消してしまう -->
+      <div class="card-grid">
         <!-- 普及部 -->
         <div class="card">
           <div class="card__image-placeholder" style="background: linear-gradient(135deg, #00a4e4, #0057B8); font-size: 1.5rem;">普及部</div>
