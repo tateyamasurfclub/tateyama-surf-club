@@ -244,33 +244,31 @@ def render_news_items(items: list[dict], limit: int = 5) -> str:
 
 
 def render_annual() -> str:
-    """schedule.html 年間スケジュール表。"""
+    """schedule.html 年間スケジュール表。列は 月 / 主な活動・イベント の2つ。"""
     rows = []
     for row in read_rows("annual.csv"):
         month = get(row, "月")
         if not month:
             continue
         activity = get(row, "主な活動・イベント", "主な活動", "活動") or "-"
-        note = get(row, "備考", "メモ")
         if is_emphasized(row):
             rows.append(
                 f'              <tr style="background: var(--primary-light);">\n'
                 f'                <td><strong style="color: var(--primary);">'
                 f"{esc(month)}</strong></td>\n"
                 f"                <td><strong>{esc(activity)}</strong></td>\n"
-                f"                <td>{esc(note)}</td>\n"
                 f"              </tr>"
             )
         else:
             rows.append(
                 f"              <tr><td><strong>{esc(month)}</strong></td>"
-                f"<td>{esc(activity)}</td><td>{esc(note)}</td></tr>"
+                f"<td>{esc(activity)}</td></tr>"
             )
     return "\n".join(rows)
 
 
 def render_regular() -> str:
-    """schedule.html 定期活動表。"""
+    """schedule.html 定期活動表。列は 活動 / 頻度 / 時期 の3つ。"""
     rows = []
     for row in read_rows("regular.csv"):
         act = get(row, "活動", "活動名")
@@ -279,8 +277,7 @@ def render_regular() -> str:
         rows.append(
             f"              <tr><td>{esc(act)}</td>"
             f'<td>{esc(get(row, "頻度"))}</td>'
-            f'<td>{esc(get(row, "時期"))}</td>'
-            f'<td>{esc(get(row, "備考", "メモ"))}</td></tr>'
+            f'<td>{esc(get(row, "時期"))}</td></tr>'
         )
     return "\n".join(rows)
 
