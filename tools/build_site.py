@@ -195,7 +195,19 @@ def load_news() -> list[dict]:
             "image": safe_image(get(row, "画像", "写真")),
         })
     items.sort(key=lambda x: x["sort"], reverse=True)
+    assign_anchors(items)
     return items
+
+
+def assign_anchors(items: list[dict]) -> None:
+    # news.html の各カードに付けるid。トップページの見出しからここへリンクする。
+    # 同じ日付が複数あるとidが重複するので、2件目以降は -2, -3 … を足す。
+    used: dict[str, int] = {}
+    for i, it in enumerate(items):
+        base = it["sort"] or f"item{i + 1}"
+        used[base] = used.get(base, 0) + 1
+        n = used[base]
+        it["anchor"] = base if n == 1 else f"{base}-{n}"
 
 
 def render_news_cards(items: list[dict]) -> str:
@@ -215,7 +227,8 @@ def render_news_cards(items: list[dict]) -> str:
         tag = (f'              <span class="news-item__tag">{esc(it["tag"])}</span>\n'
                if it["tag"] else "")
         blocks.append(
-            f'        <div class="{cls}" style="margin-bottom: 16px;">\n'
+            f'        <div class="{cls}" id="news-{esc(it["anchor"])}"'
+            f' style="margin-bottom: 16px; scroll-margin-top: 96px;">\n'
             f"{img}"
             f"          <div>\n"
             f'            <div class="news-card__meta">\n'
@@ -240,7 +253,9 @@ def render_news_items(items: list[dict], limit: int = 5) -> str:
             f'        <div class="news-item">\n'
             f'          <span class="news-item__date">{esc(it["date"])}</span>\n'
             f"{tag}"
-            f'          <span class="news-item__title">{esc(it["title"])}</span>\n'
+            f'          <span class="news-item__title">'
+            f'<a href="news.html#news-{esc(it["anchor"])}">{esc(it["title"])}</a>'
+            f'</span>\n'
             f"        </div>"
         )
     return "\n".join(blocks)
