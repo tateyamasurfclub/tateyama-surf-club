@@ -63,9 +63,12 @@ def load_config() -> dict:
 
 def sheet_url(sheet_id: str, tab_name: str) -> str:
     """「リンクを知っている全員が閲覧可」のシートをCSVで読み出すURL。APIキー不要。"""
+    # headers=1 は必須。付けないとGoogle側が「何行目までが見出しか」を勝手に推測し、
+    # 文字列だけの列が続くとデータ行まで見出しに巻き込んで1行に連結してしまう
+    # （2026-08-25、お知らせが全消えする事故が起きた）。
     return (
         f"https://docs.google.com/spreadsheets/d/{sheet_id}/gviz/tq"
-        f"?tqx=out:csv&sheet={urllib.parse.quote(tab_name)}"
+        f"?tqx=out:csv&headers=1&sheet={urllib.parse.quote(tab_name)}"
     )
 
 
@@ -336,18 +339,24 @@ def main() -> int:
     print(f"お知らせ {len(news)}件 を反映します")
 
     changed = False
-    changed |= splice(
-        os.path.join(ROOT, "news.html"),
-        "<!-- ===== 記事ここから（上に追加） ===== -->",
-        "<!-- ===== 記事ここまで ===== -->",
-        render_news_cards(news),
-    )
-    changed |= splice(
-        os.path.join(ROOT, "index.html"),
-        "<!-- ===== ニュースここから（上に追加） ===== -->",
-        "<!-- ===== ニュースここまで ===== -->",
-        render_news_items(news, int(cfg.get("top_page_news_count", 5))),
-    )
+    if news:
+        changed |= splice(
+            os.path.join(ROOT, "news.html"),
+            "<!-- ===== 記事ここから（上に追加） ===== -->",
+            "<!-- ===== 記事ここまで ===== -->",
+            render_news_cards(news),
+        )
+        changed |= splice(
+            os.path.join(ROOT, "index.html"),
+            "<!-- ===== ニュースここから（上に追加） ===== -->",
+            "<!-- ===== ニュースここまで ===== -->",
+            render_news_items(news, int(cfg.get("top_page_news_count", 5))),
+        )
+    else:
+        # 0件は「全部消す」ではなく「読めていない」と考える。取得失敗や列名の
+        # 読み違いで、掲載中のお知らせを丸ごと消してしまう事故を防ぐ。
+        print("  [警告] お知らせが0件でした。既存の掲載はそのまま残します。"
+              "（シートのタブ名・列名・共有設定を確認してください）")
     changed |= splice(
         os.path.join(ROOT, "schedule.html"),
         "<!-- ===== 年間スケジュールここから ===== -->",
