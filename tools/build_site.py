@@ -41,6 +41,11 @@ SHEETS = [
 ]
 
 # 画像ファイル名として許可する形。CSSのurl()に差し込むため厳格に絞る
+# 記事ページ（お知らせ1件＝1ページ）の置き場とテンプレート
+ARTICLES = os.path.join(ROOT, "news")
+TEMPLATE_ARTICLE = os.path.join(TOOLS, "templates", "article.html")
+ARTICLE_NAME = re.compile(r"^\d{8}(-\d+)?\.html$")
+
 SAFE_IMAGE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*\.(jpg|jpeg|png|webp)$", re.I)
 
 TRUTHY = {"はい", "○", "◯", "o", "yes", "true", "1", "★", "強調"}
@@ -172,6 +177,18 @@ def safe_image(value: str) -> str:
     return v
 
 
+def safe_url(value: str) -> str:
+    """外部リンクを検証する。http/https 以外は捨てる（javascript: 等を弾く）。"""
+    v = value.strip()
+    if not v:
+        return ""
+    if not re.match(r"^https?://[^\s<>]+$", v):
+        print(f"  [警告] リンク「{value}」は使えないため掲載しません。"
+              f"（http:// または https:// のみ）")
+        return ""
+    return v
+
+
 def esc(value: str) -> str:
     return html.escape(value, quote=True)
 
@@ -193,6 +210,8 @@ def load_news() -> list[dict]:
             "title": title,
             "body": get(row, "本文", "内容", "概要"),
             "image": safe_image(get(row, "画像", "写真")),
+            "link": safe_url(get(row, "リンクURL", "リンク", "URL")),
+            "link_text": get(row, "リンク文言", "リンク名"),
         })
     items.sort(key=lambda x: x["sort"], reverse=True)
     assign_anchors(items)
@@ -210,14 +229,105 @@ def assign_anchors(items: list[dict]) -> None:
         it["anchor"] = base if n == 1 else f"{base}-{n}"
 
 
+def gallery_files(anchor: str) -> list[str]:
+    """images/news/<anchor>/ に置いた写真を名前順に集める。無ければ空。"""
+    folder = os.path.join(ROOT, "images", "news", anchor)
+    if not os.path.isdir(folder):
+        return []
+    return sorted(f for f in os.listdir(folder) if SAFE_IMAGE.match(f))
+
+
+def render_gallery(item: dict) -> str:
+    """記事ページの写真。1枚なら大きく1枚、2枚以上なら2列のグリッド。"""
+    files = gallery_files(item["anchor"])
+    if not files:
+        return ""
+    base = f"../images/news/{item['anchor']}/"
+    if len(files) == 1:
+        return (f'        <img src="{base}{esc(files[0])}" alt="{esc(item["title"])}"\n'
+                f'             style="width: 100%; border-radius: var(--radius-lg);">\n')
+    cells = []
+    for i, name in enumerate(files, start=1):
+        cells.append(
+            f'          <div class="photo-grid__item" role="img"'
+            f' aria-label="{esc(item["title"])}（写真{i}）"'
+            f' style="aspect-ratio: 3 / 2;'
+            f" background-image: url('{base}{esc(name)}');\"></div>"
+        )
+    return ('        <div class="photo-grid photo-grid--2">\n'
+            + "\n".join(cells)
+            + "\n        </div>\n")
+
+
+def render_link(item: dict) -> str:
+    """記事ページの外部リンク（主催者ページなど）。シートに無ければ出さない。"""
+    if not item["link"]:
+        return ""
+    label = item["link_text"] or "関連リンク"
+    return (f'        <p style="margin-top: 24px;">'
+            f'<a href="{esc(item["link"])}" target="_blank" rel="noopener">'
+            f"{esc(label)}</a></p>\n")
+
+
+def write_articles(items: list[dict]) -> bool:
+    """お知らせ1件につき記事ページを1枚つくる。トップからはここへ直接飛ばす。"""
+    if not os.path.exists(TEMPLATE_ARTICLE):
+        print(f"  [エラー] 記事テンプレートがありません: {TEMPLATE_ARTICLE}")
+        return False
+    with open(TEMPLATE_ARTICLE, encoding="utf-8", newline="") as f:
+        template = f.read()
+
+    os.makedirs(ARTICLES, exist_ok=True)
+    changed = False
+    keep = set()
+
+    for it in items:
+        name = f"{it['anchor']}.html"
+        keep.add(name)
+        tag = (f'          <span class="news-item__tag">{esc(it["tag"])}</span>\n'
+               if it["tag"] else "")
+        parts = {
+            "TITLE": esc(it["title"]),
+            "DESC": esc((it["body"] or it["title"])[:110]),
+            "DATE": esc(it["date"]),
+            "TAG": tag,
+            "BODY": esc(it["body"]),
+            "GALLERY": render_gallery(it),
+            "LINK": render_link(it),
+        }
+        # 1回で置き換える。差し込んだ本文の中の文字を二重に置換しないため。
+        page = re.sub(r"\{\{(\w+)\}\}", lambda m: parts.get(m.group(1), ""), template)
+
+        path = os.path.join(ARTICLES, name)
+        current = ""
+        if os.path.exists(path):
+            with open(path, encoding="utf-8", newline="") as f:
+                current = f.read()
+        if current != page:
+            with open(path, "w", encoding="utf-8", newline="") as f:
+                f.write(page)
+            print(f"  記事: news/{name}")
+            changed = True
+
+    # 掲載をやめたお知らせの記事ページは置いていかない（リンク切れ防止）
+    if os.path.isdir(ARTICLES):
+        for name in sorted(os.listdir(ARTICLES)):
+            if ARTICLE_NAME.match(name) and name not in keep:
+                os.remove(os.path.join(ARTICLES, name))
+                print(f"  記事を削除: news/{name}")
+                changed = True
+    return changed
+
+
 def render_news_cards(items: list[dict]) -> str:
     """news.html 用。写真つきカード（画像が無ければ文字だけのカード）。"""
     blocks = []
     for it in items:
+        href = f"news/{it['anchor']}.html"
         if it["image"]:
-            img = (f'          <div class="news-card__img" '
+            img = (f'          <a href="{href}" class="news-card__img" '
                    f"style=\"background-image: url('images/news/{esc(it['image'])}');\">"
-                   f"</div>\n")
+                   f"</a>\n")
             cls = "news-card"
         else:
             img = ""
@@ -235,8 +345,11 @@ def render_news_cards(items: list[dict]) -> str:
             f"{tag}"
             f'              <span class="news-card__date">{esc(it["date"])}</span>\n'
             f"            </div>\n"
-            f'            <h3 class="news-card__title">{esc(it["title"])}</h3>\n'
+            f'            <h3 class="news-card__title">'
+            f'<a href="{href}" style="color: inherit;">{esc(it["title"])}</a></h3>\n'
             f"{body}"
+            f'            <p style="margin-top: 12px;">'
+            f'<a href="{href}">詳しく見る &rarr;</a></p>\n'
             f"          </div>\n"
             f"        </div>"
         )
@@ -254,8 +367,8 @@ def render_news_items(items: list[dict], limit: int = 5) -> str:
             f'          <span class="news-item__date">{esc(it["date"])}</span>\n'
             f"{tag}"
             f'          <span class="news-item__title">'
-            f'<a href="news.html#news-{esc(it["anchor"])}">{esc(it["title"])}</a>'
-            f'</span>\n'
+            f'<a href="news/{esc(it["anchor"])}.html">{esc(it["title"])}</a>'
+            f"</span>\n"
             f"        </div>"
         )
     return "\n".join(blocks)
@@ -367,6 +480,7 @@ def main() -> int:
             "<!-- ===== ニュースここまで ===== -->",
             render_news_items(news, int(cfg.get("top_page_news_count", 5))),
         )
+        changed |= write_articles(news)
     else:
         # 0件は「全部消す」ではなく「読めていない」と考える。取得失敗や列名の
         # 読み違いで、掲載中のお知らせを丸ごと消してしまう事故を防ぐ。
