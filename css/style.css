@@ -1659,3 +1659,20 @@ a[href^="mailto:"],
 a[href^="http"] {
   overflow-wrap: anywhere;
 }
+
+/* --- スマホのお知らせ一覧：日付・タグ・見出しを折り返す --- */
+/* .news-item は横一列（日付＋タグ＋見出し）だが、タグが長くなると
+   見出しの取り分が細くなり、1文字ずつ折り返して読めなくなる。
+   （例「競技部・ユース・ジュニア」）
+   狭い画面では日付とタグを1行目、見出しを2行目に落とす。 */
+@media (max-width: 600px) {
+  .news-item {
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    align-items: center;
+  }
+
+  .news-item__title {
+    flex-basis: 100%;
+  }
+}
