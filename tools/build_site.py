@@ -248,10 +248,16 @@ def render_gallery(item: dict) -> str:
                 f'             style="width: 100%; border-radius: var(--radius-lg);">\n')
     cells = []
     for i, name in enumerate(files, start=1):
+        # 枚数が奇数のとき、最後の1枚だけ横いっぱいに広げる。
+        # そうしないと最終行に半分幅のコマがぽつんと残る。
+        # span 2 は使わない。スマホの1列表示のときに列を1つ勝手に増やしてしまう。
+        # 1 / -1 なら「いまある列の端から端まで」なので、1列でも2列でも正しく効く。
+        wide = ("grid-column: 1 / -1; "
+                if len(files) % 2 and i == len(files) else "")
         cells.append(
             f'          <div class="photo-grid__item" role="img"'
             f' aria-label="{esc(item["title"])}（写真{i}）"'
-            f' style="aspect-ratio: 3 / 2;'
+            f' style="{wide}aspect-ratio: 3 / 2;'
             f" background-image: url('{base}{esc(name)}');\"></div>"
         )
     return ('        <div class="photo-grid photo-grid--2">\n'
