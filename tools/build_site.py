@@ -237,11 +237,81 @@ def gallery_files(anchor: str) -> list[str]:
     return sorted(f for f in os.listdir(folder) if SAFE_IMAGE.match(f))
 
 
+def image_size(path: str) -> tuple[int, int] | None:
+    """画像の幅と高さを読む。JPEGとPNGだけ。読めなければ None。
+
+    ここでPillowを使うと公開用のGitHub Actionsで動かなくなる（追加インストールを
+    していない）。ヘッダーを自分で読むので、標準ライブラリだけで完結する。
+    """
+    try:
+        with open(path, "rb") as f:
+            head = f.read(24)
+            if head[:8] == b"\x89PNG\r\n\x1a\n" and head[12:16] == b"IHDR":
+                return (int.from_bytes(head[16:20], "big"),
+                        int.from_bytes(head[20:24], "big"))
+            if head[:2] != b"\xff\xd8":
+                return None
+            f.seek(2)
+            while True:
+                b = f.read(1)
+                while b and b != b"\xff":
+                    b = f.read(1)
+                while b == b"\xff":
+                    b = f.read(1)
+                if not b:
+                    return None
+                marker = b[0]
+                if marker == 0x01 or 0xD0 <= marker <= 0xD9:
+                    continue
+                seg = f.read(2)
+                if len(seg) < 2:
+                    return None
+                length = int.from_bytes(seg, "big")
+                # SOF0〜SOF15。ただしDHT(C4)/JPG(C8)/DAC(CC)は寸法を持たない
+                if 0xC0 <= marker <= 0xCF and marker not in (0xC4, 0xC8, 0xCC):
+                    data = f.read(5)
+                    if len(data) < 5:
+                        return None
+                    return (int.from_bytes(data[3:5], "big"),
+                            int.from_bytes(data[1:3], "big"))
+                f.seek(length - 2, 1)
+    except OSError:
+        return None
+
+
+def aspect_of(path: str) -> str:
+    """写真そのものの縦横比を返す（CSSのaspect-ratio用）。
+
+    枠を3:2に決め打ちすると、縦位置の写真は上下が切り落とされる。
+    案内看板のように文字が写っているものは、それだけで意味が失われる。
+    極端な比率だけは抑える。
+    """
+    size = image_size(path)
+    if not size or not size[0] or not size[1]:
+        return "3 / 2"
+    w, h = size
+    ratio = w / h
+    # 実寸のままだと、同じ行に並ぶ2枚の高さが数十pxずれて隙間になる。
+    # 近い比率は同じ枠に丸めて、行の高さを揃える。
+    if ratio >= 1.9:
+        return "2 / 1"      # パノラマ気味
+    if ratio >= 1.15:
+        return "3 / 2"      # 通常の横位置
+    if ratio >= 0.85:
+        return "1 / 1"      # ほぼ正方形
+    return "3 / 4"          # 縦位置
+
+
 def render_gallery(item: dict) -> str:
-    """記事ページの写真。1枚なら大きく1枚、2枚以上なら2列のグリッド。"""
+    """記事ページの写真。1枚なら大きく1枚、2枚以上なら2列のグリッド。
+
+    同じ行に並ぶコマは高さが揃うので、縦位置の写真は縦位置どうし
+    隣り合うように並べ順を決めること。
+    """
     files = gallery_files(item["anchor"])
     if not files:
         return ""
+    folder = os.path.join(ROOT, "images", "news", item["anchor"])
     base = f"../images/news/{item['anchor']}/"
     if len(files) == 1:
         return (f'        <img src="{base}{esc(files[0])}" alt="{esc(item["title"])}"\n'
@@ -257,7 +327,7 @@ def render_gallery(item: dict) -> str:
         cells.append(
             f'          <div class="photo-grid__item" role="img"'
             f' aria-label="{esc(item["title"])}（写真{i}）"'
-            f' style="{wide}aspect-ratio: 3 / 2;'
+            f' style="{wide}aspect-ratio: {aspect_of(os.path.join(folder, name))};'
             f" background-image: url('{base}{esc(name)}');\"></div>"
         )
     return ('        <div class="photo-grid photo-grid--2">\n'
