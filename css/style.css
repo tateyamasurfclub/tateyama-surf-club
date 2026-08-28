@@ -17,11 +17,11 @@
   --accent-light: #e8f0fe;
   --white: #ffffff;
   --off-white: #f5f5f3;
-  --gray-100: #f0f2f5;
+  --gray-100: #e4e7ec;   /* 面の灰は1つに（旧 #f0f2f5） */
   --gray-200: #e4e7ec;
   --gray-300: #d0d5dd;
-  --gray-500: #667085;
-  --gray-700: #344054;
+  --gray-500: #5C6578;   /* どの淡い地色の上でも4.5を越える濃さへ（旧 #667085） */
+  --gray-700: #1d2939;   /* 文字の墨は1つに（旧 #344054） */
   --gray-900: #1d2939;
   --sand: #f5f0e8;
   --ocean-gradient: linear-gradient(135deg, #722F37 0%, #9B4D56 100%);
@@ -103,15 +103,6 @@ ul, ol {
   color: var(--white);
 }
 
-.section-subtitle {
-  text-align: center;
-  color: var(--gray-500);
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 8px;
-}
-
 .section-lead {
   text-align: center;
   color: var(--gray-500);
@@ -124,7 +115,7 @@ ul, ol {
   display: inline-block;
   padding: 14px 32px;
   border-radius: 50px;
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
@@ -189,9 +180,8 @@ ul, ol {
   left: 0;
   right: 0;
   height: var(--header-height);
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(10px);
-  z-index: 9999;
+  background: var(--white);
+  z-index: 100;
   border-bottom: 1px solid var(--gray-200);
   transition: box-shadow 0.3s;
 }
@@ -228,7 +218,7 @@ ul, ol {
 }
 
 .header__logo-text small {
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   color: var(--gray-500);
   font-weight: 400;
   letter-spacing: 0.08em;
@@ -280,7 +270,7 @@ ul, ol {
   padding: 8px;
   background: none;
   border: none;
-  z-index: 10000;
+  z-index: 110;
 }
 
 .hamburger span {
@@ -340,8 +330,7 @@ ul, ol {
 
 .hero__badge {
   display: inline-block;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(4px);
+  background: rgba(29,41,57,0.55);
   padding: 6px 20px;
   border-radius: 50px;
   font-size: 0.875rem;
@@ -359,7 +348,7 @@ ul, ol {
 }
 
 .hero__title-en {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 0.2em;
   opacity: 0.8;
@@ -384,6 +373,14 @@ ul, ol {
   position: relative;
   z-index: 2;
   margin-bottom: 80px;
+}
+
+.hero__textlink {
+  color: var(--white);
+  font-size: 1.125rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  align-self: center;
 }
 
 .hero__scroll {
@@ -439,13 +436,6 @@ ul, ol {
   margin-bottom: 8px;
 }
 
-.page-hero__subtitle {
-  font-size: 0.875rem;
-  opacity: 0.7;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
 .page-hero__lead {
   margin-top: 16px;
   opacity: 0.85;
@@ -457,7 +447,7 @@ ul, ol {
 /* --- Breadcrumb --- */
 .breadcrumb {
   padding: 16px 0;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   color: var(--gray-500);
   border-bottom: 1px solid var(--gray-200);
 }
@@ -536,7 +526,7 @@ ul, ol {
 }
 
 .card__title {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 700;
   margin-bottom: 12px;
   line-height: 1.4;
@@ -544,7 +534,7 @@ ul, ol {
 
 .card__text {
   color: var(--gray-500);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   line-height: 1.7;
 }
 
@@ -573,7 +563,7 @@ ul, ol {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.75rem;
+  font-size: 2rem;
 }
 
 .icon-card__title {
@@ -584,7 +574,7 @@ ul, ol {
 
 .icon-card__text {
   color: var(--gray-500);
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
 /* --- Stats --- */
@@ -616,7 +606,7 @@ ul, ol {
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
 .table th {
@@ -774,7 +764,7 @@ ul, ol {
   display: block;
   font-weight: 600;
   margin-bottom: 8px;
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
 .form-group label .required {
@@ -825,7 +815,7 @@ ul, ol {
 }
 
 .footer__brand {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 700;
   color: var(--white);
   margin-bottom: 16px;
@@ -834,7 +824,7 @@ ul, ol {
 .footer__brand small {
   display: block;
   font-size: 0.75rem;
-  color: var(--gray-500);
+  color: var(--gray-300);
   font-weight: 400;
   margin-top: 4px;
 }
@@ -870,10 +860,8 @@ ul, ol {
 .footer__heading {
   color: var(--white);
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: 1.125rem;
   margin-bottom: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
 .footer__links li {
@@ -893,8 +881,8 @@ ul, ol {
 .footer__bottom {
   padding: 20px 0;
   text-align: center;
-  font-size: 0.8125rem;
-  color: var(--gray-500);
+  font-size: 0.875rem;
+  color: var(--gray-300);
 }
 
 /* --- Responsive --- */
@@ -917,8 +905,7 @@ ul, ol {
      結果メニューの高さが padding 分（48px）に潰れ、項目がまったく押せなくなる。
      重なり順(z-index)の問題ではないので、z-index を上げても直らない。 */
   .header {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
+    /* backdrop-filter は 2026-08-28 に全面撤去済み。ここに戻さないこと。 */
   }
 
   .nav {
@@ -932,7 +919,7 @@ ul, ol {
     transition: transform 0.3s;
     overflow-y: auto;
     padding: 24px;
-    z-index: 9998;
+    z-index: 99;
   }
   .nav.active {
     transform: translateX(0);
@@ -982,7 +969,7 @@ ul, ol {
     padding: 120px 0 60px;
   }
   .page-hero__title {
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
   .card-grid--3, .card-grid--4, .card-grid {
     grid-template-columns: 1fr;
@@ -992,7 +979,7 @@ ul, ol {
     gap: 24px 16px;
   }
   .stat__number {
-    font-size: 2.25rem;
+    font-size: 2rem;
   }
   .footer__grid {
     grid-template-columns: 1fr;
@@ -1008,7 +995,7 @@ ul, ol {
     font-size: 0.75rem;
   }
   .hero__lead {
-    font-size: 0.9375rem;
+    font-size: 1rem;
   }
   .hero__badge {
     font-size: 0.75rem;
@@ -1050,7 +1037,7 @@ ul, ol {
   padding: 2px 10px;
   background: var(--primary-light);
   color: var(--primary);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 600;
   border-radius: 50px;
   white-space: nowrap;
@@ -1078,7 +1065,7 @@ ul, ol {
 }
 
 .info-box--warning {
-  background: #fff8e6;
+  background: var(--sand);   /* 情報の枠の地は砂色に統一（旧 #fff8e6） */
   border-left-color: #f0a500;
 }
 
@@ -1196,7 +1183,7 @@ ul, ol {
 .price-card__features li {
   padding: 8px 0;
   border-bottom: 1px solid var(--gray-100);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   padding-left: 24px;
   position: relative;
 }
@@ -1228,7 +1215,7 @@ ul, ol {
   transition: all 0.3s;
   border: none;
   box-shadow: var(--shadow-md);
-  z-index: 999;
+  z-index: 90;
   font-size: 1.25rem;
 }
 
@@ -1395,7 +1382,7 @@ ul, ol {
 
 .photo-card__text {
   color: var(--gray-500);
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
 /* --- Full-bleed Image + Text Overlay --- */
@@ -1452,7 +1439,7 @@ ul, ol {
 
 .photo-banner__text {
   opacity: 0.9;
-  font-size: 0.9375rem;
+  font-size: 1rem;
 }
 
 /* --- Img placeholder improved --- */
@@ -1517,7 +1504,7 @@ ul, ol {
 }
 
 .news-card__date {
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   color: var(--gray-500);
 }
 
@@ -1599,7 +1586,7 @@ ul, ol {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s, transform 0.25s;
-  z-index: 10001;
+  z-index: 120;
 }
 
 .copy-toast.visible {
@@ -1610,14 +1597,14 @@ ul, ol {
 .copy-toast strong {
   display: block;
   margin-bottom: 6px;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   word-break: break-all;
 }
 
 .copy-toast span {
   display: block;
   color: var(--gray-200);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
 }
 
 /* --- お問い合わせフォーム 送信完了 --- */
@@ -1641,7 +1628,7 @@ ul, ol {
   margin-top: 20px;
   padding-top: 20px;
   border-top: 1px solid var(--gray-200);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   color: var(--gray-500);
 }
 
