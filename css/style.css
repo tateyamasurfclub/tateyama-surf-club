@@ -1672,3 +1672,48 @@ a[href^="http"] {
     flex-basis: 100%;
   }
 }
+
+/* --- 普及部・育成部ページ（2026-10-15） ---
+   活動内容ページと同じ「写真＋文章の左右交互」で組む。
+   写真は縦位置が混ざっても段がそろうよう 4:3 に切りそろえる。 */
+.section-photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+.facts {
+  display: grid;
+  grid-template-columns: 6.5em 1fr;
+  margin: 8px 0 16px;
+  border-top: 1px solid var(--gray-200);
+}
+.facts dt, .facts dd {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--gray-200);
+}
+.facts dt {
+  font-weight: 600;
+  color: var(--primary);
+}
+.arrow-list li {
+  padding: 6px 0 6px 20px;
+  position: relative;
+}
+.arrow-list li::before {
+  content: "\25B6";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-size: 0.75em;
+  top: 0.75em;
+}
+.note {
+  color: var(--gray-500);
+  font-size: 0.875rem;
+  margin-top: 12px;
+}
+.fee-table td:last-child {
+  text-align: right;
+  font-weight: 600;
+}
