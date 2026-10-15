@@ -256,6 +256,15 @@ ul, ol {
   font-weight: 600;
 }
 
+/* メニュー項目は折り返さない。普及部と育成部を別項目にして9つになったため、
+   1025〜1200pxでは余白を詰めて1行に収める（1024px以下はハンバーガー）。 */
+.nav__link, .nav__cta, .header__logo-text { white-space: nowrap; }
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .nav__list { gap: 0; }
+  .nav__link { padding: 8px 9px; }
+  .nav__cta { margin-left: 4px; padding: 8px 14px; }
+}
+
 .nav__cta:hover {
   background: var(--primary-dark);
   color: var(--white) !important;

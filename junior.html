@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="館山サーフクラブ 普及部・育成部。幼児から高校生まで、ライフセービングを通じて海の安全と体力を学ぶプログラム。">
-  <title>普及部・育成部 | 館山サーフクラブ</title>
+  <meta name="description" content="館山サーフクラブ 普及部（旧ジュニア）。満3歳〜小学生が、海の楽しさと水辺の安全を学ぶ入門プログラム。">
+  <title>普及部 | 館山サーフクラブ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=20260826a">
+  <link rel="stylesheet" href="css/style.css?v=20261015a">
 </head>
 <body>
 
@@ -21,7 +21,8 @@
           <li><a href="index.html" class="nav__link">ホーム</a></li>
           <li><a href="about.html" class="nav__link">クラブについて</a></li>
           <li><a href="activities.html" class="nav__link">活動内容</a></li>
-          <li><a href="junior.html" class="nav__link nav__link--active">普及部・育成部</a></li>
+          <li><a href="junior.html" class="nav__link nav__link--active">普及部</a></li>
+          <li><a href="youth.html" class="nav__link">育成部</a></li>
           <li><a href="schedule.html" class="nav__link">スケジュール</a></li>
           <li><a href="safety.html" class="nav__link">水辺の安全</a></li>
           <li><a href="access.html" class="nav__link">アクセス</a></li>
@@ -31,30 +32,27 @@
     </div>
   </header>
 
-  <section class="page-hero page-hero--photo" style="background-image: url('images/hero-junior.jpg');">
-    <h1 class="page-hero__title">普及部・育成部</h1>
-    <p class="page-hero__lead">海の楽しさと安全を、子どもたちに。年齢に合わせた2つのプログラム。</p>
+  <section class="page-hero page-hero--photo" style="background-image: url('images/activity-fukyu.jpg');">
+    <h1 class="page-hero__title">普及部</h1>
+    <p class="page-hero__lead">海の楽しさと安全を、子どもたちに。満3歳〜小学生の入門プログラム。</p>
   </section>
 
   <div class="breadcrumb">
-    <div class="container"><a href="index.html">ホーム</a><span>&gt;</span>普及部・育成部</div>
+    <div class="container"><a href="index.html">ホーム</a><span>&gt;</span>普及部</div>
   </div>
 
   <!-- Introduction -->
   <section class="section">
     <div class="container">
-      <h2 class="section-title">お子さまの成長を海で育む</h2>
-      <p class="section-lead">館山サーフクラブでは、幼児から高校生まで年齢に応じた2つのプログラムを用意しています。泳ぎが得意でなくても大丈夫。海の楽しさと安全を一緒に学びましょう。</p>
+      <h2 class="section-title">海の楽しさを知り、水辺の安全を学ぶ</h2>
+      <p class="section-lead">普及部は、満3歳から小学生までを対象にした入門プログラムです。泳ぎが得意でなくても大丈夫。海の楽しさと、自分の身を守るための水辺の安全を一緒に学びましょう。</p>
 
       <div class="info-box" style="max-width: 800px; margin: 0 auto 40px;">
         <p class="info-box__title">2026年度からの名称変更</p>
-        <p>これまでの「ジュニア」は<strong>普及部</strong>に、「ユース」は<strong>育成部</strong>に名称が変わりました。</p>
+        <p>これまでの「ジュニア」は<strong>普及部</strong>に名称が変わりました。</p>
       </div>
 
-      <!-- 列数はCSSの .card-grid に任せる。ここで grid-template-columns を
-           直接書くと、スマホで1列にする指定を打ち消してしまう -->
-      <div class="card-grid">
-        <!-- 普及部 -->
+      <div style="max-width: 800px; margin: 0 auto;">
         <div class="card">
           <div class="card__image-placeholder" style="background: linear-gradient(135deg, #00a4e4, #0057B8); font-size: 1.5rem;">普及部</div>
           <div class="card__body">
@@ -66,24 +64,6 @@
               <tr><th>活動日</th><td><strong>第2・第4土曜日</strong><br>13:30〜15:30</td></tr>
               <tr><th>活動場所</th><td>北条海岸ほか</td></tr>
               <tr><th>年会費</th><td>3,000円</td></tr>
-              <tr><th>月会費</th><td>定額 3,000円<br>都度参加 2,000円</td></tr>
-              <tr><th>初回体験</th><td>1,000円</td></tr>
-            </table>
-          </div>
-        </div>
-
-        <!-- 育成部 -->
-        <div class="card">
-          <div class="card__image-placeholder" style="background: linear-gradient(135deg, #E63946, #c5303c); font-size: 1.5rem;">育成部</div>
-          <div class="card__body">
-            <span class="card__tag" style="background: var(--accent-light); color: var(--accent);">旧ユース</span>
-            <h3 class="card__title">育成部（中学生・高校生）</h3>
-            <p class="card__text" style="margin-bottom: 16px;">より本格的なトレーニングで、次世代のライフセーバーを育成するプログラムです。</p>
-            <table class="table" style="font-size: 0.875rem;">
-              <tr><th>対象</th><td>中学生・高校生</td></tr>
-              <tr><th>活動日</th><td><strong>第2・第4日曜日</strong><br>9:00〜11:00</td></tr>
-              <tr><th>活動場所</th><td>南千倉海岸ほか</td></tr>
-              <tr><th>年会費</th><td>中学生 3,000円<br>高校生 5,000円</td></tr>
               <tr><th>月会費</th><td>定額 3,000円<br>都度参加 2,000円</td></tr>
               <tr><th>初回体験</th><td>1,000円</td></tr>
             </table>
@@ -104,8 +84,6 @@
           </thead>
           <tbody>
             <tr><td>普及部</td><td>3,000円</td></tr>
-            <tr><td>育成部（中学生）</td><td>3,000円</td></tr>
-            <tr><td>育成部（高校生）</td><td>5,000円</td></tr>
           </tbody>
         </table>
 
@@ -119,11 +97,11 @@
             <tr><td><strong>初回体験</strong></td><td><strong>1,000円</strong></td></tr>
           </tbody>
         </table>
-        <p style="color: var(--gray-500); font-size: 0.875rem; margin-top: 12px;">参加費は「月会費（定額）」と「都度参加」のどちらかをお選びいただけます。普及部・育成部ともに同額です。</p>
+        <p style="color: var(--gray-500); font-size: 0.875rem; margin-top: 12px;">参加費は「月会費（定額）」と「都度参加」のどちらかをお選びいただけます。</p>
 
         <div class="info-box info-box--warning" style="margin-top: 16px;">
-          <p class="info-box__title">両方に所属される場合</p>
-          <p><strong>月会費は所属ごとにかかります。</strong>普及部と育成部の両方に所属し、どちらも定額をお選びの場合は、月額6,000円（3,000円×2）となります。</p>
+          <p class="info-box__title">普及部と育成部の両方に所属される場合</p>
+          <p><strong>月会費は所属ごとにかかります。</strong>両方に所属し、どちらも定額をお選びの場合は、月額6,000円（3,000円×2）となります。</p>
           <p style="margin-top: 8px;">一方、<strong>年会費は二重にはかかりません</strong>（下記）。</p>
         </div>
 
@@ -155,7 +133,7 @@
         <div class="icon-card">
           <div class="icon-card__icon">&#x1F3C4;</div>
           <h3 class="icon-card__title">ボード練習</h3>
-          <p class="icon-card__text">レスキューボードやニッパーボードの基本操作を練習します。</p>
+          <p class="icon-card__text">ニッパーボードの基本操作を練習します。</p>
         </div>
         <div class="icon-card">
           <div class="icon-card__icon">&#x1F3C3;</div>
@@ -173,6 +151,7 @@
           <p class="icon-card__text">練習の成果をジュニア大会で発揮。目標を持って成長できます。</p>
         </div>
       </div>
+      <p style="text-align: center; margin-top: 40px;">中学生・高校生の本格的なトレーニングは <a href="youth.html">育成部</a> のページをご覧ください。</p>
     </div>
   </section>
 
@@ -187,15 +166,11 @@
         </div>
         <div class="faq__item">
           <button class="faq__question">何歳から参加できますか？</button>
-          <div class="faq__answer">普及部は満3歳から参加可能です。育成部は中学生・高校生が対象です。</div>
+          <div class="faq__answer">満3歳から参加できます。中学生・高校生の参加も可能です。</div>
         </div>
         <div class="faq__item">
           <button class="faq__question">見学や体験はできますか？</button>
           <div class="faq__answer">はい、見学・体験は随時受け付けています。事務局までお気軽にお問い合わせください。</div>
-        </div>
-        <div class="faq__item">
-          <button class="faq__question">育成部に入らなくてもクラブ活動はできますか？</button>
-          <div class="faq__answer">はい。高校生で育成部のトレーニングに参加しない方は、育成部に加入する必要はありません。クラブの活動には引き続き参加できます。</div>
         </div>
         <div class="faq__item">
           <button class="faq__question">普及部と育成部の両方に入れますか？</button>
@@ -222,7 +197,7 @@
     <div class="container">
       <div class="footer__grid">
         <div><div class="footer__brand">館山サーフクラブ<small>TATEYAMA SURF CLUB</small></div><p class="footer__desc">千葉県館山市を拠点に活動するライフセービングクラブ。2006年設立。</p><div class="footer__social"><a href="https://www.instagram.com/tateyama_surf_club/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg></a><a href="https://www.facebook.com/tateyamasurfclub/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.29-.04-1.27-.13-2.41-.13-2.38 0-4.01 1.45-4.01 4.13v2.3H7.6V13h2.68v8h3.22z"/></svg></a></div></div>
-        <div><h4 class="footer__heading">クラブ情報</h4><ul class="footer__links"><li><a href="about.html">クラブについて</a></li><li><a href="activities.html">活動内容</a></li><li><a href="junior.html">普及部・育成部</a></li><li><a href="schedule.html">スケジュール</a></li></ul></div>
+        <div><h4 class="footer__heading">クラブ情報</h4><ul class="footer__links"><li><a href="about.html">クラブについて</a></li><li><a href="activities.html">活動内容</a></li><li><a href="junior.html">普及部</a></li><li><a href="youth.html">育成部</a></li><li><a href="schedule.html">スケジュール</a></li></ul></div>
         <div><h4 class="footer__heading">ご案内</h4><ul class="footer__links"><li><a href="join.html">入会案内</a></li><li><a href="safety.html">水辺の安全</a></li><li><a href="access.html">アクセス・ビーチ情報</a></li><li><a href="contact.html">お問い合わせ</a></li></ul></div>
         <div><h4 class="footer__heading">関連リンク</h4><ul class="footer__links"><li><a href="https://jla-lifesaving.or.jp/" target="_blank" rel="noopener">日本ライフセービング協会</a></li><li><a href="https://life-savers.jp/" target="_blank" rel="noopener">LIFESAVERS</a></li><li><a href="privacy.html">プライバシーポリシー</a></li></ul></div>
       </div>
