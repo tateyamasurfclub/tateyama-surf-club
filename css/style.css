@@ -1717,3 +1717,27 @@ a[href^="http"] {
   text-align: right;
   font-weight: 600;
 }
+/* 写真入りの見出し帯。標準の --photo は覆いが濃く写真がほとんど見えないので、
+   普及部・育成部では薄くする。文字の読みやすさは影で補う。 */
+.page-hero--soft::after {
+  background: linear-gradient(135deg, rgba(114,47,55,0.55) 0%, rgba(29,41,57,0.35) 100%);
+}
+.page-hero--soft .page-hero__title,
+.page-hero--soft .page-hero__lead {
+  text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+}
+.club-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 40px;
+}
+.club-gallery img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+@media (max-width: 768px) {
+  .club-gallery { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+}
