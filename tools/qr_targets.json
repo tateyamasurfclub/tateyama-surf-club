@@ -1,0 +1,13 @@
+{
+  "_説明": "紙もの（チラシ等）に刷るQRの台帳。QRは行き先ではなく https://tateyamasurfclub.com/q/<id>/ を指す。行き先を変えるときは to を直して build_qr_relays.py を実行するだけ（刷った紙はそのまま使える）。",
+  "analytics": {
+    "_説明": "数える仕組み。どちらか（両方でも可）を入れて build_qr_relays.py を実行すると、中継ページで読み取りが数えられる。空なら転送だけ行う。",
+    "ga4_id": "",
+    "cf_beacon_token": ""
+  },
+  "targets": {
+    "jr-ig":   { "to": "https://www.instagram.com/tateyama_junior_youth/", "media": "ジュニアチラシ2026", "label": "ジュニアのInstagram" },
+    "jr-hp":   { "to": "https://tateyamasurfclub.com/junior.html",        "media": "ジュニアチラシ2026", "label": "クラブHP（ジュニア）" },
+    "jr-club": { "to": "https://www.instagram.com/tateyama_surf_club/",    "media": "ジュニアチラシ2026", "label": "クラブ公式Instagram" }
+  }
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>クラブHP（ジュニア）へ移動しています｜館山サーフクラブ</title>
+<style>
+  html,body{height:100%;margin:0;background:#fff;color:#1F3A5F;font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;}
+  .w{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;}
+  .t{font-size:15px;font-weight:700;}
+  .s{font-size:13px;color:#555;line-height:1.7;}
+  .a{display:inline-block;background:#EF4B4B;color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:11px 22px;border-radius:999px;}
+  .sp{width:26px;height:26px;border:3px solid #f6d0d0;border-top-color:#EF4B4B;border-radius:50%;animation:r .8s linear infinite;}
+  @keyframes r{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="sp"></div>
+  <div class="t">クラブHP（ジュニア）へ移動しています</div>
+  <div class="s">自動で切り替わらないときは、下のボタンを押してください。</div>
+  <a class="a" id="go" href="https://tateyamasurfclub.com/junior.html">クラブHP（ジュニア）をひらく</a>
+</div>
+<script>
+(function(){
+  var to = "https://tateyamasurfclub.com/junior.html", id = "jr-hp", media = "ジュニアチラシ2026", label = "クラブHP（ジュニア）";
+  var moved = false;
+  function go(){ if (moved) return; moved = true; location.replace(to); }
+  // 解析へ送ってから飛ぶ。遅くとも900msで移動する（ブロッカー等で足止めしない）
+  var wait = 200;
+  if (typeof gtag === 'function') {
+    gtag('event', 'qr_scan', { qr_id: id, qr_media: media, qr_label: label, qr_to: to,
+      event_callback: go, event_timeout: 900 });
+  }
+  setTimeout(go, wait);
+  document.getElementById('go').addEventListener('click', function(){ moved = true; });
+})();
+</script>
+</body>
+</html>
